@@ -55,21 +55,21 @@ while True:
         confidences.append(float(confidence))
         classIDs.append(classID)
 
-    idxs = cv2.dnn.NMSBoxes(boxes, confidences, CONFIDENCE, THRESHOLD)
+  idxs = cv2.dnn.NMSBoxes(boxes, confidences, CONFIDENCE, THRESHOLD)
 
-    if len(idxs) > 0:
-      for i in idxs.flatten():
-        (x , y) = (boxes[i][0], boxes[i][1])
-        (w, h) = (boxes[i][2], boxes[i][3])
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255,0,0), 2)
-    
-      crop_frame = frame[y:y+h, x:x+w]
+  if len(idxs) > 0:
+    for i in idxs.flatten():
+      (x , y) = (boxes[i][0], boxes[i][1])
+      (w, h) = (boxes[i][2], boxes[i][3])
+      cv2.rectangle(frame, (x, y), (x + w, y + h), (255,0,0), 2)
 
-    cv2.imshow("Cam", frame)    
-    key = cv2.waitKey(1)
-    
-    if key == 27:
-      break
+    crop_frame = frame[y:y+h, x:x+w]
+
+  cv2.imshow("Cam", frame)
+  key = cv2.waitKey(1)
+
+  if key == 27:
+    break
 
 cap.release()
 cv2.destroyAllWindows()
