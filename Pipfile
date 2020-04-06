@@ -11,6 +11,7 @@ opencv-python-headless = "*"
 opencv-contrib-python = "*"
 pyqt5 = "*"
 pyqt5-stubs = "==5.13.1.4"
+face-recognition = "*"
 
 [requires]
 python_version = "3.7"

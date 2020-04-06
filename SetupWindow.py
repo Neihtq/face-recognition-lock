@@ -1,10 +1,7 @@
 import sys
-import cv2
-
-
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QLabel, QVBoxLayout
-from yolo_face_detection import *
+from face_lib import *
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtCore import QTimer
 
