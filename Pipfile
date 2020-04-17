@@ -8,10 +8,11 @@ pylint = "*"
 
 [packages]
 opencv-python-headless = "*"
-opencv-contrib-python = "*"
-pyqt5 = "*"
 pyqt5-stubs = "==5.13.1.4"
 face-recognition = "*"
+opencv-python = "==4.1.2.30"
+pyqt5 = "==5.12"
+pillow = "*"
 
 [requires]
 python_version = "3.7"

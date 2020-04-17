@@ -2,7 +2,6 @@ import sys
 from sys import platform
 from PyQt5 import QtWidgets
 from face_lib import *
-from face_lib import *
 from PyQt5.QtWidgets import QLabel, QVBoxLayout
 from PyQt5.QtCore import Qt
 

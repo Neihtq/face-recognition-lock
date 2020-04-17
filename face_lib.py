@@ -7,6 +7,7 @@ CONFIDENCE = 0.5
 THRESHOLD = 0.3
 
 def detect(frame):
+  clean_image = np.copy(frame)
   net = cv2.dnn.readNetFromDarknet("yolov3-face.cfg", "yolov3-wider_16000.weights")
   ln = net.getLayerNames()
   ln = [ln[i[0] - 1] for i in net.getUnconnectedOutLayers()]
@@ -39,7 +40,6 @@ def detect(frame):
 
   idxs = cv2.dnn.NMSBoxes(boxes, confidences, CONFIDENCE, THRESHOLD)
   has_face = False
-  print(len(idxs))
   if len(idxs) > 0:
     for i in idxs.flatten():
       (x, y) = (boxes[i][0], boxes[i][1])
@@ -47,7 +47,7 @@ def detect(frame):
       cv2.rectangle(frame, (x, y), (x + w, y + h), (255,0,0), 2)
     has_face = True
 
-  return frame, has_face
+  return frame, clean_image, has_face
 
 
 def recognize():

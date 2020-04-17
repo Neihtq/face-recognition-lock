@@ -1,4 +1,6 @@
 import sys
+import cv2
+from PIL import Image
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QLabel, QVBoxLayout
 from face_lib import *
@@ -45,7 +47,7 @@ class SetupWindow(QtWidgets.QWidget):
 
 
     def draw_face_box(self):
-        self.image, has_face = detect(self.image)
+        self.image, self.clean_image ,has_face = detect(self.image)
         self.update_frame()
         if has_face:
             self.descr_label.setText(self.CONFIRM)
@@ -79,8 +81,8 @@ class SetupWindow(QtWidgets.QWidget):
 
 
     def save_image(self):
-        directory = "pictures/face.jpg"
-        cv2.imwrite(directory, cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
+        img = Image.fromarray(self.clean_image, 'RGB')
+        img = img.save("face.jpg")
         self.btn.setVisible(False)
         self.yes_btn.setText("Nice!")
         self.yes_btn.clicked.connect(self.exit)
