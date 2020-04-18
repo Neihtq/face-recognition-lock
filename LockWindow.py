@@ -28,7 +28,6 @@ class LockWindow(QtWidgets.QWidget):
             self.descr_label.setText("Hi, nice to see you again! UNLOCKED")
 
 
-
     def createUI(self):
         self.descr_label = QLabel("Place your face in front of your camera.")
         self.descr_label.setAlignment(Qt.AlignCenter)

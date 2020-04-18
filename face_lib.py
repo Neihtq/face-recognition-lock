@@ -52,14 +52,23 @@ def detect(frame):
 
 def recognize():
   cap = cv2.VideoCapture(0)
-  known_image = face_recognition.load_image_file("pictures/face.jpg")
-  known_encoding = face_recognition.face_encodings(known_image)[0]
+  known_image = face_recognition.load_image_file("face.jpg")
+  known_encoding = face_recognition.face_encodings(known_image)
+  process_this_frame = True
 
   while True:
     ret, unknown_img = cap.read()
+    
+    small_frame = cv2.resize(unknown_img, (0, 0), fx=0.25, fy=0.25)
+    rgb_small_frame = small_frame[:, :, ::-1]
 
-    unknown_encoding = face_recognition.face_encodings(unknown_img)[0]
-    results = face_recognition.compare_faces([known_encoding], unknown_encoding)
+    if process_this_frame:
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+        
+        for face_encoding in face_encodings:
+          matches = face_recognition.compare_faces(known_encoding, face_encoding)
+          if True in matches:
+            return True
 
-    if results[0] == True:
-      return True
+    process_this_frame = not process_this_frame
