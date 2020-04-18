@@ -3,6 +3,8 @@ import numpy as np
 import cv2
 import face_recognition
 
+from PyQt5.QtCore import QThread, QRunnable, pyqtSignal, QObject, pyqtSlot
+
 CONFIDENCE = 0.5
 THRESHOLD = 0.3
 
@@ -49,26 +51,42 @@ def detect(frame):
 
   return frame, clean_image, has_face
 
+class WorkerSignals(QObject):
+  finished = pyqtSignal()
+  result = pyqtSignal(bool)
 
-def recognize():
-  cap = cv2.VideoCapture(0)
-  known_image = face_recognition.load_image_file("face.jpg")
-  known_encoding = face_recognition.face_encodings(known_image)
-  process_this_frame = True
 
-  while True:
-    ret, unknown_img = cap.read()
-    
-    small_frame = cv2.resize(unknown_img, (0, 0), fx=0.25, fy=0.25)
-    rgb_small_frame = small_frame[:, :, ::-1]
+class FaceRecognitionThread(QRunnable):
+  def __init__(self):
+    super(FaceRecognitionThread, self).__init__()
+    self.signals = WorkerSignals()
 
-    if process_this_frame:
-        face_locations = face_recognition.face_locations(rgb_small_frame)
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-        
-        for face_encoding in face_encodings:
-          matches = face_recognition.compare_faces(known_encoding, face_encoding)
-          if True in matches:
-            return True
 
-    process_this_frame = not process_this_frame
+  @pyqtSlot()
+  def run(self):
+    result = self.recognize()
+    self.signals.finished.emit()
+
+
+  def recognize(self):
+    cap = cv2.VideoCapture(0)
+    known_image = face_recognition.load_image_file("face.jpg")
+    known_encoding = face_recognition.face_encodings(known_image)
+    process_this_frame = True
+
+    while True:
+      ret, unknown_img = cap.read()
+      
+      small_frame = cv2.resize(unknown_img, (0, 0), fx=0.25, fy=0.25)
+      rgb_small_frame = small_frame[:, :, ::-1]
+
+      if process_this_frame:
+          face_locations = face_recognition.face_locations(rgb_small_frame)
+          face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+          
+          for face_encoding in face_encodings:
+            matches = face_recognition.compare_faces(known_encoding, face_encoding)
+            if True in matches:
+              return True
+
+      process_this_frame = not process_this_frame
