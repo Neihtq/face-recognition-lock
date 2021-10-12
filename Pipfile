@@ -10,7 +10,7 @@ pylint = "*"
 opencv-python-headless = "*"
 pyqt5-stubs = "==5.13.1.4"
 face-recognition = "*"
-opencv-python = "==4.1.2.30"
+opencv-python = "==4.2.0.32"
 pyqt5 = "==5.12"
 pillow = "*"
 
